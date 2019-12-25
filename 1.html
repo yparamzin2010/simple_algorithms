@@ -1,0 +1,25 @@
+<html>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+//alert(1+1)
+function code() {
+   var inp = $('#inp').val()
+   var coded = ""
+   for (var i = 0; i < inp.length; i++) {
+      coded += (inp.charCodeAt(i)+"-")
+   }
+   $('#out').text(coded)
+
+}
+
+</script>
+
+<body>
+<input id="inp" type="text" onchange="code()"></input>
+<br>
+<span id="out">blah</span>
+
+
+</body>
+
+</html>
