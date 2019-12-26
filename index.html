@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <meta charset="UTF-8">
+</head>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
 //alert(1+1)
@@ -53,22 +56,17 @@ function xor() {
 </script>
 
 <body>
-<label for="decoded">Decoded:</label>
-<input id="decoded" type="text" onkeyup="encode();hash();xor()"></input>
-<br>
-<label for="encoded">Encoded:</label>
-<input id="encoded" type="text" onkeyup="decode()"></input>
-<br>
-<span>Mod 100:</span>
-<span id="hash"></span>
-<br>
-<span>xor:</span>
-<span id="xor"></span>
-
- 
-</span>
-
-
+  <label for="decoded">Decoded:</label>
+  <input id="decoded" type="text" onkeyup="encode();hash();xor()"></input>
+  <br>
+  <label for="encoded">Encoded:</label>
+  <input id="encoded" type="text" onkeyup="decode()"></input>
+  <br>
+  <span>Mod 100:</span>
+  <span id="hash"></span>
+  <br>
+  <span>xor:</span>
+  <span id="xor"></span>
 </body>
 
 </html>
