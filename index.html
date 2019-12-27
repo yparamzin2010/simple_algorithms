@@ -51,13 +51,22 @@ function xor() {
 
    $('#xor').text(hashValue.toString(2))
 }
+function binary() {
+   var inp = $('#decoded').val()
+   var acc = ""
+   for (var i = 0; i < inp.length; i++) {
+      acc += (inp.charCodeAt(i).toString(2))
+   }
+
+   $('#binary_encoded').text(acc)
+}
 
 
 </script>
 
 <body>
   <label for="decoded">Decoded:</label>
-  <input id="decoded" type="text" onkeyup="encode();hash();xor()"></input>
+  <input id="decoded" type="text" onkeyup="encode();hash();xor();binary();"></input>
   <br>
   <label for="encoded">Encoded:</label>
   <input id="encoded" type="text" onkeyup="decode()"></input>
@@ -67,6 +76,9 @@ function xor() {
   <br>
   <span>xor:</span>
   <span id="xor"></span>
+  <br>
+  <span>binary_encoded:</span>
+  <span id="binary_encoded"></span>
 </body>
 
 </html>
