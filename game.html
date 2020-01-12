@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+function Creature(options) {
+  this.options = options
+  console.log('Creature is created:'+options.name)
+}
+Creature.prototype.draw = function() {
+  var c = canvas
+  var coords = this.options.coords
+  var rad = this.options.radius
+  var ctx = c.getContext("2d");
+  ctx.beginPath();
+  ctx.arc(coords.x, coords.y, rad, 0, 2*Math.PI);
+  ctx.stroke();
+}
+
+Creature.prototype.tick = function() {
+  var opts = this.options
+  var coords = opts.coords
+  coords.x += opts.speed * Math.cos(opts.movingAngle)
+  coords.y += opts.speed * Math.sin(opts.movingAngle)
+  coords.x = Math.min(Math.max(0, coords.x), canvas.width)
+  coords.y = Math.min(Math.max(0, coords.y), canvas.height)
+  opts.movingAngle = Math.random() * 2 * Math.PI;
+}
+
+var creatures = []
+
+function clearCanvas() {
+  var c = canvas
+  var ctx = c.getContext("2d");
+  ctx.clearRect(0, 0, c.width, c.height);
+}
+
+function getMillis() {
+  return Date.now();
+}
+
+var time = getMillis()
+function tick() {
+  var currentTime = getMillis()
+  
+  if(currentTime - time > 100) {
+    time = currentTime
+    creatures.forEach(c => c.tick())
+
+    clearCanvas()
+    
+    creatures.forEach(c => c.draw())
+
+  }
+  requestAnimationFrame(tick);
+}
+
+$(function() {
+  for (var i = 0; i < Math.pow(2,10); i++) {
+    creatures.push(new Creature({
+      'name':'Creature 1',
+      coords: {
+        x:canvas.width/2, y:canvas.height/2
+      },
+      radius: 5,
+      movingAngle: 0,
+      speed: 10
+    }))
+  }
+
+  requestAnimationFrame(tick);
+})
+
+
+</script>
+
+<body>
+<canvas id="canvas"
+  width="500"
+  height="300"
+  style="border:1px solid #000000;">
+
+</canvas>
+</body>
+
+</html>
