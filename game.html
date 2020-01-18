@@ -13,9 +13,20 @@ Creature.prototype.draw = function() {
   var c = canvas
   var coords = this.options.coords
   var rad = this.options.radius
+  var pointingAngle = this.options.pointingAngle
   var ctx = c.getContext("2d");
   ctx.beginPath();
   ctx.arc(coords.x, coords.y, rad, 0, 2*Math.PI);
+  ctx.stroke();
+
+  var foodCoord = world.foodItems[0].coords
+  var tg = (foodCoord.y - coords.y) / (foodCoord.x - coords.x)
+  var angleToFood = Math.atan(tg)
+  ctx.beginPath();
+  ctx.moveTo(coords.x, coords.y);
+  ctx.lineTo(
+    coords.x - rad*Math.cos(angleToFood),
+    coords.y - rad*Math.sin(angleToFood));
   ctx.stroke();
 }
 
@@ -30,6 +41,11 @@ Creature.prototype.tick = function() {
 }
 
 var creatures = []
+var world = {
+  foodItems: [
+    {coords: {x:10, y:10}}
+  ]
+}
 
 function clearCanvas() {
   var c = canvas
@@ -58,14 +74,22 @@ function tick() {
 }
 
 $(function() {
-  for (var i = 0; i < Math.pow(2,10); i++) {
+  $( "#canvas" ).click(function(e) {
+    var foodCoord = world.foodItems[0].coords
+    foodCoord.x = e.pageX -  $(this).offset().left
+    foodCoord.y = e.pageY -  $(this).offset().top
+  });
+
+  var creaturesNum = 10;//Math.pow(2,10)
+  for (var i = 0; i < creaturesNum; i++) {
     creatures.push(new Creature({
       'name':'Creature 1',
       coords: {
         x:canvas.width/2, y:canvas.height/2
       },
-      radius: 5,
+      radius: 10,
       movingAngle: 0,
+      pointingAngle: 0,
       speed: 10
     }))
   }
