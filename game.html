@@ -19,14 +19,11 @@ Creature.prototype.draw = function() {
   ctx.arc(coords.x, coords.y, rad, 0, 2*Math.PI);
   ctx.stroke();
 
-  var foodCoord = world.foodItems[0].coords
-  var tg = (foodCoord.y - coords.y) / (foodCoord.x - coords.x)
-  var angleToFood = Math.atan(tg)
   ctx.beginPath();
   ctx.moveTo(coords.x, coords.y);
   ctx.lineTo(
-    coords.x - rad*Math.cos(angleToFood),
-    coords.y - rad*Math.sin(angleToFood));
+    coords.x + rad*Math.cos(pointingAngle),
+    coords.y + rad*Math.sin(pointingAngle));
   ctx.stroke();
 }
 
@@ -38,6 +35,19 @@ Creature.prototype.tick = function() {
   coords.x = Math.min(Math.max(0, coords.x), canvas.width)
   coords.y = Math.min(Math.max(0, coords.y), canvas.height)
   opts.movingAngle = Math.random() * 2 * Math.PI;
+
+
+  var foodCoord = world.foodItems[0].coords
+  var yL = foodCoord.y - coords.y
+  var xL = foodCoord.x - coords.x
+  var tg = yL / xL
+  var angleToFood = Math.atan(tg)
+  if(yL  < 0 && xL< 0) {
+    angleToFood += Math.PI
+  } else if(yL > 0 && xL < 0) {
+    angleToFood = Math.PI + angleToFood
+  }
+  opts.pointingAngle = angleToFood
 }
 
 var creatures = []
