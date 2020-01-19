@@ -7,6 +7,7 @@
 <script>
 function Creature(options) {
   this.options = options
+  this.type = "creature"
   console.log('Creature is created:'+options.name)
 }
 Creature.prototype.draw = function() {
@@ -36,8 +37,7 @@ Creature.prototype.tick = function() {
   coords.y = Math.min(Math.max(0, coords.y), canvas.height)
   opts.movingAngle = Math.random() * 2 * Math.PI;
 
-
-  var foodCoord = world.foodItems[0].coords
+  var foodCoord = world.getFood()[0].options.coords
   var yL = foodCoord.y - coords.y
   var xL = foodCoord.x - coords.x
   var tg = yL / xL
@@ -50,11 +50,29 @@ Creature.prototype.tick = function() {
   opts.pointingAngle = angleToFood
 }
 
-var creatures = []
+function Food(options) {
+  this.options = options
+  this.type = "food"
+  console.log('Creature is created:' + options.name)
+}
+Food.prototype.tick = function() {
+}
+Food.prototype.draw = function() {
+  var c = canvas
+  var coords = this.options.coords
+  var rad = this.options.radius
+  var ctx = c.getContext("2d");
+  ctx.beginPath();
+  ctx.arc(coords.x, coords.y, rad, 0, 2*Math.PI);
+  ctx.fill();
+}
+
+
 var world = {
-  foodItems: [
-    {coords: {x:10, y:10}}
-  ]
+  entities: [],
+  getFood: function() {
+    return this.entities.filter(e=>e.type==="food")
+  }
 }
 
 function clearCanvas() {
@@ -73,11 +91,11 @@ function tick() {
   
   if(currentTime - time > 100) {
     time = currentTime
-    creatures.forEach(c => c.tick())
+    world.entities.forEach(c => c.tick())
 
     clearCanvas()
     
-    creatures.forEach(c => c.draw())
+    world.entities.forEach(c => c.draw())
 
   }
   requestAnimationFrame(tick);
@@ -85,14 +103,14 @@ function tick() {
 
 $(function() {
   $( "#canvas" ).click(function(e) {
-    var foodCoord = world.foodItems[0].coords
+    var foodCoord = world.getFood()[0].options.coords
     foodCoord.x = e.pageX -  $(this).offset().left
     foodCoord.y = e.pageY -  $(this).offset().top
   });
 
-  var creaturesNum = 10;//Math.pow(2,10)
-  for (var i = 0; i < creaturesNum; i++) {
-    creatures.push(new Creature({
+  var entitiesNum = 10;//Math.pow(2,10)
+  for (var i = 0; i < entitiesNum; i++) {
+    world.entities.push(new Creature({
       'name':'Creature 1',
       coords: {
         x:canvas.width/2, y:canvas.height/2
@@ -104,6 +122,15 @@ $(function() {
     }))
   }
 
+  for (var i = 0; i < 1; i++) {
+    world.entities.push(new Food({
+      name:'Food 1',
+      coords: {
+        x:10, y:10
+      },
+      radius: 5
+    }))
+  }
   requestAnimationFrame(tick);
 })
 
