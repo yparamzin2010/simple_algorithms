@@ -31,12 +31,6 @@ Creature.prototype.draw = function() {
 Creature.prototype.tick = function() {
   var opts = this.options
   var coords = opts.coords
-  coords.x += opts.speed * Math.cos(opts.movingAngle)
-  coords.y += opts.speed * Math.sin(opts.movingAngle)
-  coords.x = Math.min(Math.max(0, coords.x), canvas.width)
-  coords.y = Math.min(Math.max(0, coords.y), canvas.height)
-  opts.movingAngle = Math.random() * 2 * Math.PI;
-
   var foodCoord = world.getFood()[0].options.coords
   var yL = foodCoord.y - coords.y
   var xL = foodCoord.x - coords.x
@@ -48,6 +42,15 @@ Creature.prototype.tick = function() {
     angleToFood = Math.PI + angleToFood
   }
   opts.pointingAngle = angleToFood
+  opts.movingAngle = angleToFood
+  opts.movingAngle += Math.random()-0.5
+
+  coords.x += opts.speed * Math.cos(opts.movingAngle)
+  coords.y += opts.speed * Math.sin(opts.movingAngle)
+  coords.x = Math.min(Math.max(0, coords.x), canvas.width)
+  coords.y = Math.min(Math.max(0, coords.y), canvas.height)
+//  opts.movingAngle = Math.random() * 2 * Math.PI;
+
 }
 
 function Food(options) {
@@ -96,7 +99,6 @@ function tick() {
     clearCanvas()
     
     world.entities.forEach(c => c.draw())
-
   }
   requestAnimationFrame(tick);
 }
@@ -108,12 +110,17 @@ $(function() {
     foodCoord.y = e.pageY -  $(this).offset().top
   });
 
-  var entitiesNum = 10;//Math.pow(2,10)
+  var entitiesNum = 10
+  var spawnAreaRad = 50
   for (var i = 0; i < entitiesNum; i++) {
+    var spawnAngle = Math.random()*2*Math.PI
+    var spawnRadius = Math.random()*spawnAreaRad
+    var x = canvas.width/2 + spawnRadius*Math.cos(spawnAngle)
+    var y = canvas.height/2 + spawnRadius*Math.sin(spawnAngle)
     world.entities.push(new Creature({
       'name':'Creature 1',
       coords: {
-        x:canvas.width/2, y:canvas.height/2
+        x:x, y:y
       },
       radius: 10,
       movingAngle: 0,
@@ -122,15 +129,17 @@ $(function() {
     }))
   }
 
+  
   for (var i = 0; i < 1; i++) {
     world.entities.push(new Food({
       name:'Food 1',
       coords: {
-        x:10, y:10
+        x:10+Math.random(), y:10
       },
       radius: 5
     }))
   }
+
   requestAnimationFrame(tick);
 })
 
