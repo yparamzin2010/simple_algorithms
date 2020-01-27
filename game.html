@@ -31,9 +31,30 @@ Creature.prototype.draw = function() {
 Creature.prototype.tick = function() {
   var opts = this.options
   var coords = opts.coords
-  var foodCoord = world.getFood()[0].options.coords
+
+  // Find closest food
+  var minDistance = 999999
+  var closestFood;
+  world.getFood().forEach((food, i)=>{
+      var foodCoord = food.options.coords
+      var distance = Math.sqrt(
+        Math.pow(coords.y-foodCoord.y,2)+Math.pow(coords.x-foodCoord.x,2))
+      if(distance < 10) {
+         food.eaten = true
+         return
+      }
+      if(distance < minDistance) {
+          minDistance = distance
+          closestFood = food
+      }
+  })
+  
+  // Get food coord
+  var foodCoord = closestFood.options.coords
   var yL = foodCoord.y - coords.y
   var xL = foodCoord.x - coords.x
+
+  // Calculate direction to food
   var tg = yL / xL
   var angleToFood = Math.atan(tg)
   if(yL  < 0 && xL< 0) {
@@ -45,12 +66,11 @@ Creature.prototype.tick = function() {
   opts.movingAngle = angleToFood
   opts.movingAngle += Math.random()-0.5
 
+  // Go to food
   coords.x += opts.speed * Math.cos(opts.movingAngle)
   coords.y += opts.speed * Math.sin(opts.movingAngle)
   coords.x = Math.min(Math.max(0, coords.x), canvas.width)
   coords.y = Math.min(Math.max(0, coords.y), canvas.height)
-//  opts.movingAngle = Math.random() * 2 * Math.PI;
-
 }
 
 function Food(options) {
@@ -61,6 +81,9 @@ function Food(options) {
 Food.prototype.tick = function() {
 }
 Food.prototype.draw = function() {
+  if(this.eaten === true) {
+     return
+  }
   var c = canvas
   var coords = this.options.coords
   var rad = this.options.radius
@@ -74,7 +97,7 @@ Food.prototype.draw = function() {
 var world = {
   entities: [],
   getFood: function() {
-    return this.entities.filter(e=>e.type==="food")
+    return this.entities.filter(e=>e.type==="food" && e.eaten !== true)
   }
 }
 
@@ -92,7 +115,7 @@ var time = getMillis()
 function tick() {
   var currentTime = getMillis()
   
-  if(currentTime - time > 100) {
+  if(currentTime - time > 300) {
     time = currentTime
     world.entities.forEach(c => c.tick())
 
@@ -130,11 +153,11 @@ $(function() {
   }
 
   
-  for (var i = 0; i < 1; i++) {
+  for (var i = 0; i < 10; i++) {
     world.entities.push(new Food({
       name:'Food 1',
       coords: {
-        x:10+Math.random(), y:10
+        x:Math.random()*canvas.width, y:Math.random()*canvas.height
       },
       radius: 5
     }))
