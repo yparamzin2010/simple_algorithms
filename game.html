@@ -49,28 +49,36 @@ Creature.prototype.tick = function() {
       }
   })
   
-  // Get food coord
-  var foodCoord = closestFood.options.coords
-  var yL = foodCoord.y - coords.y
-  var xL = foodCoord.x - coords.x
+  if (closestFood !== undefined) {
+    // Get food coord
+    var foodCoord = closestFood.options.coords
+    var yL = foodCoord.y - coords.y
+    var xL = foodCoord.x - coords.x
 
-  // Calculate direction to food
-  var tg = yL / xL
-  var angleToFood = Math.atan(tg)
-  if(yL  < 0 && xL< 0) {
-    angleToFood += Math.PI
-  } else if(yL > 0 && xL < 0) {
-    angleToFood = Math.PI + angleToFood
+    // Calculate direction to food
+    var tg = yL / xL
+    var angleToFood = Math.atan(tg)
+    if(yL  < 0 && xL< 0) {
+      angleToFood += Math.PI
+    } else if(yL > 0 && xL < 0) {
+      angleToFood = Math.PI + angleToFood
+    }
+    opts.pointingAngle = angleToFood
+    opts.movingAngle = angleToFood
+    opts.movingAngle += Math.random()-0.5
   }
-  opts.pointingAngle = angleToFood
-  opts.movingAngle = angleToFood
-  opts.movingAngle += Math.random()-0.5
 
   // Go to food
   coords.x += opts.speed * Math.cos(opts.movingAngle)
   coords.y += opts.speed * Math.sin(opts.movingAngle)
-  coords.x = Math.min(Math.max(0, coords.x), canvas.width)
-  coords.y = Math.min(Math.max(0, coords.y), canvas.height)
+  var shouldChangeAngle = false;
+  if(coords.x < 0 || coords.x > canvas.width ||
+     coords.y < 0 || coords.y > canvas.height) {
+    opts.movingAngle += Math.PI
+  }
+  
+  //coords.x = Math.min(Math.max(0, coords.x), canvas.width)
+  //coords.y = Math.min(Math.max(0, coords.y), canvas.height)
 }
 
 function Food(options) {
@@ -115,7 +123,7 @@ var time = getMillis()
 function tick() {
   var currentTime = getMillis()
   
-  if(currentTime - time > 300) {
+  if(currentTime - time > 200) {
     time = currentTime
     world.entities.forEach(c => c.tick())
 
