@@ -1,0 +1,178 @@
+
+<html>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+var dictionary = {
+  "the" : "ehf",
+  "no" : "dooh",
+  "yes" : "ong",
+  "of" : "por",
+  "on" : "uuh",
+  "off" : "lulo",
+  "throw" : "yilt",
+  "it" : "uj",
+  "he" : "mon",
+  "she" : "fefe",
+  "all" : "eygr",
+  "them" : "hok",
+  "are" : "iog",
+  "is" : "ing",
+  "thing" : "yug",
+  "hello" : "riuh",
+  "bye" : "hur",
+  "my" : "ohhy",
+  "your" : "juhk",
+  "yours" : "juhkilk",
+  "people" : "kolub",
+  "person" : "kol",
+  "time" : "renk",
+  "day" : "mey",
+  "man" : "kum",
+  "woman" : "olmuk",
+  "child" : "okluumd",
+  "to" : "ool",
+  "be" : "ged",
+  "have" : "eeso",
+  "do" : "oklod",
+  "say" : "ouy",
+  "go" : "jeu",
+  "get" : "eed",
+  "make" : "maka",
+  "know" : "onka",
+  "see" : "wade",
+  "come" : "omock",
+  "look" : "ookal",
+  "want" : "anlag",
+  "use" : "ockart",
+  "i" : "e",
+  "am" : "okoo",
+  "empty" : "olm",
+  "string" : "wihk",
+  "ball" : "zedushi",
+  "cube" : "eicon",
+  "zero" : "ix",
+  "one" : "iok",
+  "two" : "ou",
+  "three" : "fet",
+  "four" : "ogg",
+  "five" : "jolk",
+  "six" : "erg",
+  "seven" : "ille",
+  "eight" : "cuck",
+  "nine" : "troo",
+  "ten" : "des",
+  "eleven" : "desiok",
+  "twelve" : "desou",
+  "thirteen" : "desfet",
+  "fourteen" : "desogg",
+  "fifteen" : "desjolk",
+  "sixteen" : "deserg",
+  "seventeen" : "desille",
+  "eighteen" : "descuck",
+  "nineteen" : "destroo",
+  "twenty" : "ouob",
+  "thirty" : "fetob",
+  "forty" : "oggob",
+  "fifty" : "jolkob",
+  "sixty" : "ergob",
+  "seventy" : "illeob",
+  "eighty" : "cuckob",
+  "ninety" : "troogob",
+  "hundred" : "outon",
+  "thousand" : "ixil",
+  "million" : "iokil",
+  "billion" : "ouil",
+  "trillion" : "fetil",
+  "quadrillion" : "oggil",
+  "quintillion" : "jolkil",
+  "sextillion" : "ergil",
+  "septillion" : "illeil",
+  "octillion" : "cuckil",
+  "and" : "plutu",
+  "you" : "ju",
+  "old" : "zok-",
+  "well" : "ellon",
+  "blue" : "mud-",
+  "red" : "dagg-",
+  "green" : "oppog-",
+  "yellow" : "kika-",
+  "cyan" : "hok-",
+  "purple" : "quilk-",
+  "dark" : "sceed-",
+  "bright" : "heep",
+  "mud" : "dirro",
+  "year" : "yar",
+  "secret" : "nokno",
+  "scared" : "kuuj",
+  "mountain" : "mogree",
+  "mount" : "soin",
+  "high" : "monol",
+  "rain" : "juhk",
+  "cloud" : "skee",
+  "happy" : "juh",
+  "block" : "doein",
+  "doing" : "oncurr",
+  "join" : "inton",
+  "internet" : "webbok",
+  "web" : "logg",
+  "book" : "poggera",
+  "library" : "poggetod",
+  "page" : "poge",
+  "sky" : "monoob",
+  "house" : "olxam",
+  "we" : "eplui",
+  "in" : "oxaz",
+  "a" : "o",
+  "explon" : "ornad",
+  "yocto" : "ergilath",
+  "zepto" : "jolkilath",
+  "atto" : "oggilath",
+  "femto" : "fetilath",
+  "pico" : "ouilath",
+  "nano" : "iokilath",
+  "micro" : "ixilath",
+  "milli" : "outonath",
+  "deci" : "desath",
+  "deca" : "desog",
+  "hecto" : "outonog",
+  "kilo" : "ixilog",
+  "mega" : "iokilog",
+  "giga" : "ouilog",
+  "tera" : "fetilog",
+  "peta" : "oggilog",
+  "exa" : "jolkilog",
+  "zetta" : "illeilog",
+  "yotta" : "cuckilog"
+
+
+
+
+
+//s=ilk
+//ed=bolck
+//first,second,third etc=(number)+zin/in
+//decimal=ath
+//1 explon=1kg of tnt
+}  
+function keyHandle(text) {
+  var terms = text.trim().split(" ",);
+  console.log(text)
+ var terms = text.trim().split("-",);
+  console.log(text)
+
+
+  var translatedTerms = []
+  terms.forEach((term)=>{
+    var translatedTerm = dictionary[term] || term
+    translatedTerms.push(translatedTerm)
+  })
+
+  $('#target').val(translatedTerms.join(' '))
+ 
+}
+</script>
+<body>
+<input type="text" onkeyup="keyHandle(this.value)"></input>
+<input id='target' type="text"></input>
+<body>
+</html>
