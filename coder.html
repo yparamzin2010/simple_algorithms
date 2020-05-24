@@ -142,9 +142,8 @@ var dictionary = {
   "peta" : "oggilog",
   "exa" : "jolkilog",
   "zetta" : "illeilog",
-  "yotta" : "cuckilog"
-
-
+  "yotta" : "cuckilog",
+  "thing" : "ickor"
 
 
 
@@ -153,26 +152,47 @@ var dictionary = {
 //first,second,third etc=(number)+zin/in
 //decimal=ath
 //1 explon=1kg of tnt
-}  
-function keyHandle(text) {
-  var terms = text.trim().split(" ",);
-  console.log(text)
- var terms = text.trim().split("-",);
-  console.log(text)
+}
 
+var reverseDictionary = {}
+for(var term in dictionary){
+  reverseDictionary[dictionary[term]] = term
+} 
+
+console.log(reverseDictionary)
+
+
+function encode(text, dict=dictionary) {
+  var terms = text.trim().split(/[ -]/,);
+  console.log(text)
 
   var translatedTerms = []
   terms.forEach((term)=>{
-    var translatedTerm = dictionary[term] || term
+    var translatedTerm = dict[term] || term
     translatedTerms.push(translatedTerm)
   })
 
   $('#target').val(translatedTerms.join(' '))
+}
+function decode(text) {
+  // Reverse 
+  var terms = text.trim().split(/[ ]/,);
+
+  var translatedTerms = []
+  terms.forEach((term)=>{
+    var translatedTerm = reverseDictionary[term] || term
+    console.log(term + ' -> '+reverseDictionary[term])
+    translatedTerms.push(translatedTerm)
+  })
+
+  $('#source').val(translatedTerms.join(' '))
  
 }
 </script>
 <body>
-<input type="text" onkeyup="keyHandle(this.value)"></input>
-<input id='target' type="text"></input>
+
+<input id="source" type="text" onkeyup="encode(this.value)"></input>
+<input id='target' type="text" onkeyup="decode(this.value)"></input>
+
 <body>
 </html>
