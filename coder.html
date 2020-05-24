@@ -97,6 +97,7 @@ var dictionary = {
   "green" : "oppog-",
   "yellow" : "kika-",
   "cyan" : "hok-",
+  "orange" : "moot-",
   "purple" : "quilk-",
   "dark" : "sceed-",
   "bright" : "heep",
@@ -124,25 +125,25 @@ var dictionary = {
   "in" : "oxaz",
   "a" : "o",
   "explon" : "ornad",
-  "yocto" : "ergilath",
-  "zepto" : "jolkilath",
-  "atto" : "oggilath",
-  "femto" : "fetilath",
-  "pico" : "ouilath",
-  "nano" : "iokilath",
-  "micro" : "ixilath",
-  "milli" : "outonath",
-  "deci" : "desath",
-  "deca" : "desog",
-  "hecto" : "outonog",
-  "kilo" : "ixilog",
-  "mega" : "iokilog",
-  "giga" : "ouilog",
-  "tera" : "fetilog",
-  "peta" : "oggilog",
-  "exa" : "jolkilog",
-  "zetta" : "illeilog",
-  "yotta" : "cuckilog",
+  "yocto" : "ergilath-",
+  "zepto" : "jolkilath-",
+  "atto" : "oggilath-",
+  "femto" : "fetilath-",
+  "pico" : "ouilath-",
+  "nano" : "iokilath-",
+  "micro" : "ixilath-",
+  "milli" : "outonath-",
+  "deci" : "desath-",
+  "deca" : "desog-",
+  "hecto" : "outonog-",
+  "kilo" : "ixilog-",
+  "mega" : "iokilog-",
+  "giga" : "ouilog-",
+  "tera" : "fetilog-",
+  "peta" : "oggilog-",
+  "exa" : "jolkilog-",
+  "zetta" : "illeilog-",
+  "yotta" : "cuckilog-",
   "thing" : "ickor"
 
 
@@ -162,8 +163,8 @@ for(var term in dictionary){
 console.log(reverseDictionary)
 
 
-function encode(text, dict=dictionary) {
-  var terms = text.trim().split(/[ -]/,);
+function encode(text, target='#target', dict=dictionary) {
+  var terms = text.trim().split(/[ ]/,);
   console.log(text)
 
   var translatedTerms = []
@@ -172,20 +173,21 @@ function encode(text, dict=dictionary) {
     translatedTerms.push(translatedTerm)
   })
 
-  $('#target').val(translatedTerms.join(' '))
+  $(target).val(translatedTerms.join(' '))
 }
 function decode(text) {
+  encode(text,'#source',reverseDictionary)
   // Reverse 
-  var terms = text.trim().split(/[ ]/,);
+//  var terms = text.trim().split(/[ ]/,);
 
-  var translatedTerms = []
-  terms.forEach((term)=>{
-    var translatedTerm = reverseDictionary[term] || term
-    console.log(term + ' -> '+reverseDictionary[term])
-    translatedTerms.push(translatedTerm)
-  })
+//  var translatedTerms = []
+//  terms.forEach((term)=>{
+//    var translatedTerm = reverseDictionary[term] || term
+//    console.log(term + ' -> '+reverseDictionary[term])
+//    translatedTerms.push(translatedTerm)
+//  })
 
-  $('#source').val(translatedTerms.join(' '))
+//  $('#source').val(translatedTerms.join(' '))
  
 }
 </script>
