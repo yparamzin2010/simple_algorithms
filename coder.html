@@ -14,10 +14,8 @@ console.log(reverseDictionary)
 
 
 function encode(text, output='#output', dict=dictionary) {
-  var terms = text.trim().split(/[ ]/,);
+  var terms = tokenize(text);
   console.log(text)
-
-
 
   var translatedTerms = []
   terms.forEach((term)=>{
@@ -25,22 +23,30 @@ function encode(text, output='#output', dict=dictionary) {
     translatedTerms.push(translatedTerm)
   })
 
-  $(output).val(translatedTerms.join(' '))
+  $(output).val(specialJoin(translatedTerms))
+}
+
+
+function tokenize(text) {
+  text = text.replace("'", "' ")
+  return text.trim().split(/[ ]/).filter((term)=>term != "")
+}
+
+function specialJoin(terms) {
+  var output = ''
+  var prevTerm = ''
+  for(var i=0; i < terms.length; i++) {
+    var term = terms[i]
+    if(!prevTerm.endsWith("'")) {
+      output += ' '
+    }
+    output += term
+    prevTerm = term
+  }
+  return output
 }
 function decode(text) {
   encode(text,'#input',reverseDictionary)
-  // Reverse 
-//  var terms = text.trim().split(/[ ]/,);
-
-//  var translatedTerms = []
-//  terms.forEach((term)=>{
-//    var translatedTerm = reverseDictionary[term] || term
-//    console.log(term + ' -> '+reverseDictionary[term])
-//    translatedTerms.push(translatedTerm)
-//  })
-
-//  $('#input').val(translatedTerms.join(' '))
- 
 }
 </script>
 <body>
