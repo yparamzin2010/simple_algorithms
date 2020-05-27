@@ -50,6 +50,29 @@ function specialJoin(terms) {
 function decode(text) {
   encode(text,'#input',reverseDictionary)
 }
+function ying(text, output='#thing2', sict=nict) {
+  var terms = tokenize(text);
+  console.log(text)
+
+  var translatedTerms = []
+  terms.forEach((term)=>{
+    var translatedTerm = sict[term] || term
+    translatedTerms.push(translatedTerm)
+  })
+
+  $(output).val(specialJoin(translatedTerms))
+}
+
+var nict = {
+  "r" : "berd",
+
+
+
+
+
+}
+
+
 </script>
 <body>
 
@@ -62,8 +85,6 @@ function decode(text) {
 <input id='output' type="text" onkeyup="decode(this.value)"></input>
 </div>
 
-<body>
-</html>
 <br>
 <br>
 <br>
@@ -78,3 +99,38 @@ function decode(text) {
 <br>
 <br>
 this is a translator of a language that is called yinnish.
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+<div>
+<label for="thing1">something -></label>
+<input id="thing1" type="text" onkeyup="ying(this.value)"></input>
+</div>
+<div>
+<label for="thing2">something else -></label>
+<input id='thing2' type="text"></input>
+</div>
+
+<body>
+</html>
+

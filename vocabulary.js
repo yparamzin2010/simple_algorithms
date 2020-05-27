@@ -146,8 +146,8 @@ var dictionary = {
   "tape" : "loo",
   "with" : "ilo",
   "what" : "hong",
-  "name" : "yeeyo"
- 
+  "name" : "yeeyo",
+   "so" : "onk"
 
 
 
