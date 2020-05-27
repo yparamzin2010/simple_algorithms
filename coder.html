@@ -169,7 +169,7 @@ for(var term in dictionary){
 console.log(reverseDictionary)
 console.log(nfchhfcdbcfhvfngnx)
 
-function encode(text, target='#target', dict=dictionary) {
+function encode(text, output='#output', dict=dictionary) {
   var terms = text.trim().split(/[ ]/,);
   console.log(text)
 
@@ -181,10 +181,10 @@ function encode(text, target='#target', dict=dictionary) {
     translatedTerms.push(translatedTerm)
   })
 
-  $(target).val(translatedTerms.join(' '))
+  $(output).val(translatedTerms.join(' '))
 }
 function decode(text) {
-  encode(text,'#source',reverseDictionary)
+  encode(text,'#input',reverseDictionary)
   // Reverse 
 //  var terms = text.trim().split(/[ ]/,);
 
@@ -195,16 +195,20 @@ function decode(text) {
 //    translatedTerms.push(translatedTerm)
 //  })
 
-//  $('#source').val(translatedTerms.join(' '))
+//  $('#input').val(translatedTerms.join(' '))
  
 }
 </script>
 <body>
 
-<input id="source" type="text" onkeyup="encode(this.value)"></input>
-<input id='target' type="text" onkeyup="decode(this.value)"></input>
+<div>
+<label for="input">English -></label>
+<input id="input" type="text" onkeyup="encode(this.value)"></input>
+</div>
+<div>
+<label for="output">Yinish -></label>
+<input id='output' type="text" onkeyup="decode(this.value)"></input>
+</div>
 
 <body>
 </html>
-<br>-----------^----------------------------------------------------^
-<br>--------english--------------------------------------------yinish
