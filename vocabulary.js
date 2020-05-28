@@ -1,7 +1,7 @@
 var dictionary = {
   "the" : "ehf",
   "no" : "dooh",
-  "yes" : "ong",
+  "yes" : "huung",
   "of" : "por",
   "on" : "uuh",
   "off" : "lulo",
@@ -120,7 +120,7 @@ var dictionary = {
   "we" : "eplui",
   "in" : "oxaz",
   "a" : "o",
-  "explon" : "ornad",
+  "ong" : "ornad",
   "yocto" : "ergilath'",
   "zepto" : "jolkilath'",
   "atto" : "oggilath'",
@@ -155,6 +155,6 @@ var dictionary = {
 //ed=bolck
 //first,second,third etc=(number)+zin/in
 //decimal=ath
-//1 explon=1kg of tnt
+//1 ong=1kg of tnt
 }
 
