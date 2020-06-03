@@ -1,0 +1,123 @@
+<html>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-analytics.js"></script>
+<script>
+  // Web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyCLIfcJh5rNzQAWFliHujZaEtj1h4CxyXE",
+    authDomain: "chat-4f3d1.firebaseapp.com",
+    databaseURL: "https://chat-4f3d1.firebaseio.com",
+    projectId: "chat-4f3d1",
+    storageBucket: "chat-4f3d1.appspot.com",
+    messagingSenderId: "776697210746",
+    appId: "1:776697210746:web:b8f192055ac895f68a58c3",
+    measurementId: "G-GFKT8G1WJ1"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  var db = firebase.firestore();
+  var provider = new firebase.auth.GoogleAuthProvider();
+  provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+
+  const collectionName = "messages"
+
+  function authenticate() {
+  console.log('Authenticating...')
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      var token = result.credential.accessToken;
+      // The signed-in user info.
+      window.user = result.user;
+      console.log(`User = ${user}`)
+      // ...
+    }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      console.log(`Authentication error: ${errorMessage}`)
+      // ...
+    });
+  }
+
+  function pollDatabase() {
+    var outputText = ''
+    db.collection(collectionName).get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+          var data = doc.data()
+          outputText += `${data.user}:${data.body}<br>`
+      });
+      $('#output').html(outputText)
+    });
+  }
+
+  function send(message) {
+    console.log(`Sending '${message}'...`);
+    var username = ($('#username').val())
+    db.collection(collectionName).add({
+        body: message,
+        user: username
+    })
+    .then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+    })
+    .catch(function(error) {
+        console.error("Error adding document: ", error);
+    });
+  }
+
+  function clearDatabase() {
+     console.log("Clearing database...");
+     db.collection(collectionName).get().then((querySnapshot) => {
+       querySnapshot.forEach((doc) => {
+           deleteById(doc.id)
+       })
+     })
+  }
+
+  function deleteById(id) {
+     console.log(`Removing ${id}...`);
+     db.collection(collectionName).doc(id).delete().then(function() {
+        console.log("Document successfully deleted!");
+    }).catch(function(error) {
+        console.error("Error removing document: ", error);
+    });
+  }
+
+
+  $(function(){
+     authenticate()
+     setInterval(pollDatabase, 3000)
+  })
+</script>
+
+<body>
+<div>
+<label for="input">Input -></label>
+<input id="input" type="text"></input>
+</div>
+<div>
+<label for="username">username -></label>
+<input id="username" type="text"></input>
+</div>
+<div>
+<button onclick="send($('#input').val())">Send</button>
+</div>
+<div>
+<button onclick="clearDatabase()">Delete all</button>
+</div>
+<div id="output">
+Out
+</div>
+<body>
+</html>
