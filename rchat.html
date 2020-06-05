@@ -35,6 +35,8 @@
       var token = result.credential.accessToken;
       // The signed-in user info.
       window.user = result.user;
+      FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+      String uid = user.getUid();
       console.log(user)
       // ...
     }).catch(function(error) {
@@ -96,28 +98,26 @@
 
 
   $(function(){
-     authenticate()
      setInterval(pollDatabase, 3000)
   })
 </script>
 
 <body>
 <div>
-<label for="input">Input -></label>
+<label for="input"><R/label>
 <input id="input" type="text"></input>
 </div>
 <div>
-<label for="username">username -></label>
+<label for="username">name -></label>
 <input id="username" type="text"></input>
 </div>
 <div>
 <button onclick="send($('#input').val())">Send</button>
 </div>
 <div>
-<button onclick="clearDatabase()">Delete all</button>
+<butfcvvvczton onclick="clearDatabase()"></button>
 </div>
 <div id="output">
-Out
 </div>
 <body>
 </html>
