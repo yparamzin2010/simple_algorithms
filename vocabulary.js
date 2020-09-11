@@ -111,7 +111,7 @@ var dictionary = {
   "clouds" : "skilk",
   "happy" : "juh",
   "block" : "doein",
-  "blocks" : "doeinilk"
+  "blocks" : "doeinilk",
   "doing" : "oncurr",
   "join" : "inton",
   "internet" : "webbok",
@@ -155,7 +155,7 @@ var dictionary = {
    "so" : "onk",
    "cheat" : "fridd",
    "cheats" : "frigilk"
-
+}
 
 
 //s=ilk
@@ -163,5 +163,5 @@ var dictionary = {
 //first,second,third etc=(number)+zin/in
 //decimal=ath
 //1 ong=1kg of tnt
-}
+
 
