@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+//alert(1+1)
+function encode() {
+   var inp = $('#decoded').val()
+   var coded = ""
+   for (var i = 0; i < inp.length; i++) {
+      coded += (inp.charCodeAt(i)+"-")
+   }
+   console.log(coded)
+   $('#encoded').val(coded)
+}
+
+function decode() {
+   var inp = $('#encoded').val()
+   var codes=inp.split("-")
+   console.log(codes)
+
+   var decoded = ""
+   for (var i = 0; i < codes.length; i++) {
+      decoded += String.fromCharCode(codes[i]);
+   }
+
+   $('#decoded').val(decoded)
+}
+function hash() {
+   var inp = $('#decoded').val()
+   var sum = 0
+   for (var i = 0; i < inp.length; i++) {
+      sum += inp.charCodeAt(i)
+   }
+   var hashValue = sum % 100
+
+   $('#hash').text(hashValue.toString(2))
+}
+function xor() {
+   var inp = $('#decoded').val()
+   var acc = 0
+   for (var i = 0; i < inp.length; i++) {
+      acc ^= inp.charCodeAt(i)
+      acc <<= 1
+      acc >>>= 0
+      acc %= 700
+   }
+   var hashValue = acc// % 100
+
+   $('#xor').text(hashValue.toString(2))
+}
+function binary() {
+   var inp = $('#decoded').val()
+   var acc = ""
+   for (var i = 0; i < inp.length; i++) {
+      acc += (inp.charCodeAt(i).toString(2))
+   }
+
+   $('#binary_encoded').text(acc)
+}
+
+
+</script>
+
+<body>
+meowmeow
+  <label for="decoded">Decoded:</label>
+  <input id="decoded" type="text" onkeyup="encode();hash();xor();binary();"></input>
+  <br>
+  <label for="encoded">Encoded:</label>
+  <input id="encoded" type="text" onkeyup="decode()"></input>
+  <br>
+  <span>Mod 100:</span>
+  <span id="hash"></span>
+  <br>
+  <span>xor:</span>
+  <span id="xor"></span>
+  <br>
+  <span>binary_encoded:</span>
+  <span id="binary_encoded"></span>
+</body>
+
+</html>
