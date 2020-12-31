@@ -155,7 +155,9 @@ var dictionary = {
    "so" : "onk",
    "cheat" : "fridd",
    "cheats" : "frigilk",
-   "forth" : "fagol"
+   "forth" : "fagol",
+   "plus" : "oda",
+   "add" : "edos"
 }
 
 
