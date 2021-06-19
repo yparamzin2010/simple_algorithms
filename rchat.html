@@ -1,4 +1,7 @@
 <html>
+<head>
+    <meta charset="utf-8">
+</head>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
@@ -9,14 +12,13 @@
 <script>
   // Web app's Firebase configuration
   var firebaseConfig = {
-    apiKey: "AIzaSyCLIfcJh5rNzQAWFliHujZaEtj1h4CxyXE",
-    authDomain: "chat-4f3d1.firebaseapp.com",
-    databaseURL: "https://chat-4f3d1.firebaseio.com",
-    projectId: "chat-4f3d1",
-    storageBucket: "chat-4f3d1.appspot.com",
-    messagingSenderId: "776697210746",
-    appId: "1:776697210746:web:b8f192055ac895f68a58c3",
-    measurementId: "G-GFKT8G1WJ1"
+    apiKey: "AIzaSyAPi1hcqjeRhzOOfQsVnkWGUoWZ_ptQOg4",
+    authDomain: "birdview-286612.firebaseapp.com",
+    projectId: "birdview-286612",
+    storageBucket: "birdview-286612.appspot.com",
+    messagingSenderId: "128496185357",
+    appId: "1:128496185357:web:4721feea9f18892f54e544",
+    measurementId: "G-SSYMGREKVV"
   };
 
   // Initialize Firebase
@@ -29,14 +31,14 @@
   const collectionName = "messages"
 
   function authenticate() {
-  console.log('Authenticating...')
+    console.log('Authenticating...')
     firebase.auth().signInWithPopup(provider).then(function(result) {
       // This gives you a Google Access Token. You can use it to access the Google API.
       var token = result.credential.accessToken;
       // The signed-in user info.
       window.user = result.user;
-      FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-      String uid = user.getUid();
+      console.log("result")
+      var uid = result.user.getUid();
       console.log(user)
       // ...
     }).catch(function(error) {
@@ -57,7 +59,9 @@
     db.collection(collectionName).get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
           var data = doc.data()
-          outputText += `${data.user}:${data.body}<br>`
+          outputText += `${data.sender}:${data.body}<br>`
+          console.log(data)
+
       });
       $('#output').html(outputText)
     });
@@ -68,10 +72,11 @@
     var username = ($('#username').val())
     db.collection(collectionName).add({
         body: message,
-        user: username
+        sender: username
     })
     .then(function(docRef) {
         console.log("Document written with ID: ", docRef.id);
+        pollDatabase()
     })
     .catch(function(error) {
         console.error("Error adding document: ", error);
@@ -98,13 +103,14 @@
 
 
   $(function(){
-     setInterval(pollDatabase, 3000)
+    pollDatabase()
+   //  setInterval(pollDatabase, 3000)
   })
 </script>
 
 <body>
 <div>
-<label for="input"><R/label>
+<label for="input"></label>
 <input id="input" type="text"></input>
 </div>
 <div>
@@ -115,9 +121,9 @@
 <button onclick="send($('#input').val())">Send</button>
 </div>
 <div>
-<butfcvvvczton onclick="clearDatabase()"></button>
+<button onclick="clearDatabase()"></button>
 </div>
 <div id="output">
 </div>
-<body>
+</body>
 </html>
