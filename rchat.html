@@ -25,41 +25,31 @@
   firebase.initializeApp(firebaseConfig);
   firebase.analytics();
   var db = firebase.firestore();
-  var provider = new firebase.auth.GoogleAuthProvider();
-  // provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+
 
   const collectionName = "messages"
 
   function authenticate() {
+
     console.log('Authenticating...')
-    firebase.auth().signInWithPopup(provider).then(function(result) {
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      var token = result.credential.accessToken;
-      // The signed-in user info.
-      if (result.credential) {
-          /** @type {firebase.auth.OAuthCredential} */
-          var credential = result.credential;
 
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          var token = credential.accessToken;
-          // ...
-       }
-
-      window.user = result.user;
-      console.log(result)
-      pollDatabase()
-      // ...
-    }).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // The email of the user's account used.
-      var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
-      console.log(`Authentication error: ${errorMessage}`)
-      // ...
-    });
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
+            var provider = new firebase.auth.GoogleAuthProvider();
+            // provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+            firebase.auth().signInWithPopup(provider).then(function(result) {
+              console.log("Authentication succeeded")
+              pollDatabase()
+            }).catch(function(error) {
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              console.log(`Authentication error: ${errorMessage}`)
+            });
+         }).catch((error) => {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(`Authentication initialization error: ${errorMessage}`)
+         });
   }
 
   function pollDatabase() {
@@ -111,7 +101,16 @@
 
 
   $(function(){
-    authenticate()
+      firebase.auth().onAuthStateChanged((user) => {
+          if (user == null) {
+            authenticate()
+          } else {
+            console.log ("Authenticated!")
+            console.log (firebase.auth().currentUser)
+            pollDatabase()
+          }
+        });
+
 
    //  setInterval(pollDatabase, 3000)
   })
