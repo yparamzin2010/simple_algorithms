@@ -9,108 +9,23 @@
 <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-database.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-analytics.js"></script>
+<script src="js/firebase-util.js"></script>
 <script>
-  // Web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyAPi1hcqjeRhzOOfQsVnkWGUoWZ_ptQOg4",
-    authDomain: "birdview-286612.firebaseapp.com",
-    projectId: "birdview-286612",
-    storageBucket: "birdview-286612.appspot.com",
-    messagingSenderId: "128496185357",
-    appId: "1:128496185357:web:4721feea9f18892f54e544",
-    measurementId: "G-SSYMGREKVV"
-  };
-
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
-  var db = firebase.firestore();
-
-
-  const collectionName = "messages"
-
-  function authenticate() {
-
-    console.log('Authenticating...')
-
-    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
-            var provider = new firebase.auth.GoogleAuthProvider();
-            // provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-            firebase.auth().signInWithPopup(provider).then(function(result) {
-              console.log("Authentication succeeded")
-              pollDatabase()
-            }).catch(function(error) {
-              var errorCode = error.code;
-              var errorMessage = error.message;
-              console.log(`Authentication error: ${errorMessage}`)
-            });
-         }).catch((error) => {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(`Authentication initialization error: ${errorMessage}`)
-         });
-  }
-
-  function pollDatabase() {
-    var outputText = ''
-    db.collection(collectionName).get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-          var data = doc.data()
-          outputText += `${data.sender}:${data.body}<br>`
-          console.log(data)
-
-      });
-      $('#output').html(outputText)
-    });
-  }
-
-  function send(message) {
-    console.log(`Sending '${message}'...`);
-    var username = ($('#username').val())
-    db.collection(collectionName).add({
-        body: message,
-        sender: username
-    })
-    .then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
-        pollDatabase()
-    })
-    .catch(function(error) {
-        console.error("Error adding document: ", error);
-    });
-  }
-
-  function clearDatabase() {
-     console.log("Clearing database...");
-     db.collection(collectionName).get().then((querySnapshot) => {
-       querySnapshot.forEach((doc) => {
-           deleteById(doc.id)
-       })
-     })
-  }
-
-  function deleteById(id) {
-     console.log(`Removing ${id}...`);
-     db.collection(collectionName).doc(id).delete().then(function() {
-        console.log("Document successfully deleted!");
-    }).catch(function(error) {
-        console.error("Error removing document: ", error);
-    });
-  }
-
-
+  // Page initialization
   $(function(){
+
       firebase.auth().onAuthStateChanged((user) => {
           if (user == null) {
+            console.log (`User is not authenticated!`)
+            // User not authenticated
             authenticate()
           } else {
-            console.log ("Authenticated!")
-            console.log (firebase.auth().currentUser)
+            userName = user.displayName
+            // User authenticated
+            console.log (`${userName} is authenticated!`)
             pollDatabase()
           }
         });
-
 
    //  setInterval(pollDatabase, 3000)
   })
@@ -118,19 +33,17 @@
 
 <body>
 <div>
-<label for="input"></label>
-<input id="input" type="text"></input>
+    <label for="input">Message:</label>
+    <input id="input" type="text"></input>
+    <button onclick="send($('#input').val())">Send</button>
 </div>
+<hr>
 <div>
-<label for="username">name -></label>
-<input id="username" type="text"></input>
+    <button onclick="pollDatabase()">Reload</button>
+    <button onclick="clearDatabase()">Delete All Messages</button>
+    <button onclick="firebase.auth().signOut()">Sign Out</button>
 </div>
-<div>
-<button onclick="send($('#input').val())">Send</button>
-</div>
-<div>
-<button onclick="clearDatabase()"></button>
-</div>
+<hr>
 <div id="output">
 </div>
 </body>
