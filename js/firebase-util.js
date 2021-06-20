@@ -35,10 +35,11 @@
 
   function pollDatabase() {
     var outputText = ''
-    db.collection(messagesCollectionName).get().then((querySnapshot) => {
+    db.collection(messagesCollectionName).orderBy("timestamp", "desc").get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-          var data = doc.data()
-          outputText += `${data.sender}:${data.body}<br>`
+          var message = doc.data()
+          var date = new Date(message.timestamp).toLocaleString()
+          outputText += `${date} - ${message.sender}:${message.body}<br>`
       });
       $('#output').html(outputText)
     });
@@ -48,7 +49,8 @@
     console.log(`Sending '${message}' from '${userName}'...`);
     db.collection(messagesCollectionName).add({
         body: message,
-        sender: userName
+        sender: userName,
+        timestamp: Date.now()
     })
     .then(function(docRef) {
         console.log("Document written with ID: ", docRef.id);
@@ -61,6 +63,7 @@
 
   function clearDatabase() {
      console.log("Clearing database...");
+
      db.collection(messagesCollectionName).get().then((querySnapshot) => {
        querySnapshot.forEach((doc) => {
            deleteById(doc.id)
